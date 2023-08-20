@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import sys
 import model_generator
 import configparser
+import validation
 
 """
     Generates Open API Specification from an XMI design model
@@ -50,14 +51,21 @@ def runGUI():
             config['default']['type_guid'] = values["i-2"]
             config['default']['f_in'] = values["i-3"]
             config['default']['f_out'] =  values["i-4"]
+            # update config file
             with open('config.ini', 'w') as configfile:
                 config.write(configfile)
+            
             path_guid = values["i-1"]
             type_guid = values["i-2"]
             f_in = values["i-3"]
             f_out = values["i-4"]
-            model_generator.generate_model(f_in, f_out, path_guid, type_guid)
-            sg.popup_auto_close('Model has been generated', title="Completed", auto_close_duration=10)
+            # verify input data
+            msg = validation.is_valid_input(f_in, f_out, path_guid, type_guid)
+            if (msg != ""):
+                sg.popup_error(msg)
+            else:
+                model_generator.generate_model(f_in, f_out, path_guid, type_guid)
+                sg.popup_auto_close('Model has been generated', title="Completed", auto_close_duration=10)
         elif(event == "Exit"):
             config['default'] = {}
             config['default']["path_guid"] = values["i-1"]
@@ -71,7 +79,6 @@ def runGUI():
             break
 
     window.close()
-
 
 if __name__ == '__main__':
     runGUI()

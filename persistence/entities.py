@@ -45,15 +45,28 @@ class Operation:
     stereotype:str    
     name:str
     type:str
-    return_array:str
+    return_array:int
+    classifier: str
+    ea_guid: str  = field(init=False)
+    scope: str = "Public"
     note:str = ""
+    
+    def __post_init__(self):
+        self.ea_guid = "{" + str(uuid.uuid1()) +"}"
 
 @dataclass
-class Parameter:
+class OperationParameter:
     operation_id:int
     name:str
     type:str
+    kind:str    # (in, out)
+    position:int     # display position
+    classifier: int # the object_id if the type is an object, e.g. class
+    ea_guid: str  = field(init=False)
     note:str = "" 
+
+    def __post_init__(self):
+        self.ea_guid = "{" + str(uuid.uuid1()) +"}"
 
 @dataclass
 class Connector:

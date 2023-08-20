@@ -1,3 +1,4 @@
+import uuid
 from sqlite3 import Connection, Row, Cursor
 from persistence.entities import Tag
 import persistence.utils as ut
@@ -36,3 +37,23 @@ def get_attribute_tags(f_in:str, attribute_id:int)->dict:
         for row in rows:
             tags[row[2]] = row[3] 
     return tags
+
+def create_tag(f_db:str, object_id:int, name:str, value:str, notes: int)->int:
+    """
+    Create a tag in the t_objectproperties table
+    :param f_db: Sparx DB file name
+    :param object_id: Object id
+    :param name: name of tag
+    :param value: type of attribute
+    :param notes: notes, e.g. 'Default: /'
+    :return: int: tag identifier
+    """
+    conn = ut.create_connection(f_db)
+    sql = ''' INSERT INTO t_objectproperties(Object_ID, ea_guid, Property, Value, Notes) VALUES(?,?,?,?,?) '''
+    ea_guid = "{" + str(uuid.uuid1()) +"}"
+    sql_vals =(object_id, ea_guid, name, value, notes)    
+    with conn:
+        cur = conn.cursor()
+        cur.execute(sql, sql_vals)
+        conn.commit()
+    return cur.lastrowid

@@ -66,7 +66,7 @@ def get_object_by_name(f_db:str, name:str)->Object:
     conn = ut.create_connection(f_db)
     with conn:
         cur = conn.cursor()
-        cur.execute("SELECT Object_ID, Package_ID, ParentID, Object_Type, Stereotype, Name, Note FROM t_object where Name=?",(name,))
+        cur.execute("SELECT Object_ID, Package_ID, ParentID, Object_Type, Stereotype, Name, Note FROM t_object where Name=? ",(name, ))
         row = cur.fetchone()
         if row is not None: 
             o = Object(row[0],row[1],row[2],row[3], row[4],row[5], row[6])

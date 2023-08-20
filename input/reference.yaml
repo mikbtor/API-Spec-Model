@@ -1,0 +1,1334 @@
+openapi: 3.0.2
+info:
+  version: '1.0'
+  title: My Open API Specification
+  description: API Definitions
+tags: []
+servers:
+- url: http://localhost:8080
+  description: development server
+paths:
+  /parties:
+    get:
+      tags:
+      - Party
+      operationId: parties_search
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: phone_number
+        in: query
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: last_name
+        in: query
+        schema:
+          type: string
+      - name: org_name
+        in: query
+        schema:
+          type: string
+      - name: identifier
+        in: query
+        schema:
+          type: string
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parties'
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - Party
+      operationId: parties_create
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Party'
+      responses:
+        201:
+          description: Create successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Party
+      operationId: parties_update
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Party'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{partiy_id}/phones:
+    get:
+      tags:
+      - Party
+      operationId: phones_get
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: partiy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Phone'
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - Party
+      operationId: phones_create
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: partiy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+      responses:
+        201:
+          description: Create successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Party
+      operationId: phones_update
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: partiy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{party_id}/phones/{phone_id}:
+    patch:
+      tags:
+      - Party
+      operationId: phone_partial_update
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: phone_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Party
+      operationId: phone_delete
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: phone_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Delete successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{party_id}/emails:
+    get:
+      tags:
+      - Party
+      operationId: emails_get
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Email'
+
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - Party
+      operationId: emails_create
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+      responses:
+        201:
+          description: Create successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Party
+      operationId: emails_update
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{party_id}/emails/{email_id}:
+    patch:
+      tags:
+      - Party
+      operationId: email_patch
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: email_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Party
+      operationId: email_delete
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: email_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Delete successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{party_id}:
+    get:
+      tags:
+      - Party
+      operationId: party_get
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+      - Party
+      operationId: party_patch
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Party'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Party
+      operationId: party_delete
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Delete successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{party_id}/addresses:
+    get:
+      tags:
+      - Party
+      operationId: addresses_get
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - Party
+      operationId: addresses_create
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        201:
+          description: Create successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Party
+      operationId: addresses_update
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parties/{party_id}/addresses/{address_id}:
+    patch:
+      tags:
+      - Party
+      operationId: address_patch
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: address_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Party
+      operationId: address_delete
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: party_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: address_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Delete successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts:
+    get:
+      tags:
+      - Accounts
+      operationId: accounts_search
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: account_id
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: account_type
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
+      - name: phone_number
+        in: query
+        schema:
+          type: string
+        style: form
+        explode: false
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - Accounts
+      operationId: accounts_create
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        201:
+          description: Create successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Accounts
+      operationId: accounts_update
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{account_id}:
+    get:
+      tags:
+      - Accounts
+      operationId: account_get
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Accounts
+      operationId: account_delete
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: Delete successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+      - Accounts
+      operationId: account_updateBalance
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Money'
+      responses:
+        200:
+          description: Update successful
+        400:
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Account:
+      required:
+      - name
+      - account_type
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          nullable: false
+          readOnly: true
+        name:
+          type: string
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Owner'
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+        account_type:
+          $ref: '#/components/schemas/AccountType'
+        balance:
+          $ref: '#/components/schemas/Money'
+      discriminator:
+        propertyName: account_type
+    AccountSummary:
+      type: object
+      properties:
+        account_id:
+          type: integer
+          format: int32
+        account_name:
+          type: string
+        account_type:
+          type: integer
+          format: int32
+        balance:
+          $ref: '#/components/schemas/Money'
+    AccountType:
+      type: string
+      enum:
+      - CASH
+      - SAVINGS
+    Accounts:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountSummary'
+    Address:
+      type: object
+      properties:
+        address_type:
+          type: string
+          x-code-set: address_type
+        street_no:
+          type: string
+        street_name:
+          type: string
+        apt_no:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        postal_code:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+    CashAccount:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          monthly_fee:
+            type: number
+            format: double
+    Currency:
+      type: string
+      enum:
+      - USD
+      - CAD
+      - EUR
+    Email:
+      type: object
+      properties:
+        email:
+          type: integer
+          format: int32
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+    Money:
+      required:
+      - amount
+      - currency
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+        currency:
+          $ref: '#/components/schemas/Currency'
+    Note:
+      required:
+      - subject
+      - body
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          nullable: false
+          readOnly: true
+        action:
+          type: string
+          maxLength: 1
+          x-code-set: NoteAction
+        subject:
+          type: string
+          maxLength: 3
+          x-code-set: NoteSubject
+        body:
+          type: string
+        complete_date:
+          type: string
+          format: date
+        follow-up_date:
+          type: string
+          format: date
+    Organization:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Party'
+      - type: object
+        properties:
+          name:
+            type: string
+          registration_no:
+            type: string
+    Owner:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          nullable: false
+          readOnly: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+        primary_email:
+          type: string
+        primary_phone:
+          type: string
+    Parties:
+      type: object
+      properties:
+        parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Party_Summary'
+    Party:
+      required:
+      - party_id
+      - party_type
+      type: object
+      properties:
+        party_id:
+          type: integer
+          format: int32
+        party_type:
+          $ref: '#/components/schemas/PartyType'
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+      discriminator:
+        propertyName: party_type
+    PartyType:
+      type: string
+      enum:
+      - PERSON
+      - ORGANIZATION
+    Party_Summary:
+      type: object
+      properties:
+        party_id:
+          type: integer
+          format: int32
+        first_name:
+          type: string
+        last_name:
+          type: string
+        org_name:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+    Person:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Party'
+      - type: object
+        properties:
+          first_name:
+            type: string
+          middle_name:
+            type: string
+          last_name:
+            type: string
+          birth_date:
+            type: string
+            format: date
+          gov_id:
+            type: string
+          marital_status:
+            type: string
+            x-code-set: marital_status
+          dependendents_no:
+            type: integer
+            format: int32
+    Phone:
+      type: object
+      properties:
+        phone_type:
+          type: string
+        country_code:
+          type: integer
+          format: int32
+        phone_no:
+          type: integer
+          format: int32
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+    SavingsAccount:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          annual_interest:
+            type: number
+            format: double
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+        invalidParameters:
+          type: array
+          items: 
+            $ref: '#/components/schemas/ErrorParameter'    
+
+    ErrorParameter:
+      type: object
+      properties:
+        parameters:
+          type: array
+          items:
+            type: string
+        reason:
+          type: string
+
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- BearerToken: []

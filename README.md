@@ -5,6 +5,7 @@ Imports both components/schemas and paths.
 Specifics:
 - allOf imported as inheritance
 - $ref imported as associations
+
 What is not implemented:
 - query and path parameters
 - not creating objects from referenced files

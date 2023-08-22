@@ -16,7 +16,9 @@ def get_package(f_in:str, package_guid:str)->Package:
         row = cur.fetchone()
         if row is not None:
             p = Package(row[0],row[1],row[2],row[3])
-    return p    
+            return p
+        else:
+            return None    
 
 def get_child_packages(f_in:str, package_id:int)->dict:
     """

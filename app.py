@@ -62,10 +62,14 @@ def runGUI():
             # verify input data
             msg = validation.is_valid_input(f_in, f_out, path_guid, type_guid)
             if (msg != ""):
-                sg.popup_error(msg)
+                sg.popup_error(f"There are validation errors: \n{msg}", title="Validation Error")
             else:
-                model_generator.generate_model(f_in, f_out, path_guid, type_guid)
-                sg.popup_auto_close('Model has been generated', title="Completed", auto_close_duration=10)
+                try:
+                    model_generator.generate_model(f_in, f_out, path_guid, type_guid)
+                    sg.popup_auto_close('Model has been generated', title="Completed", auto_close_duration=10)
+                except Exception as e:
+                    sg.popup_error(f"An error has been encountered: \n {e}", title="Error")
+
         elif(event == "Exit"):
             config['default'] = {}
             config['default']["path_guid"] = values["i-1"]

@@ -54,7 +54,10 @@ def get_object_by_id(f_db:str, object_id:int)->Object:
         row = cur.fetchone()
         if row is not None: 
             o = Object(row[0],row[1],row[2],row[3], row[4],row[5], row[6])
-    return o
+            return o    
+        else:
+            return None
+    
 
 def get_object_by_name(f_db:str, name:str)->Object:
     """

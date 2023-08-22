@@ -57,13 +57,12 @@ def create_enum_attribute(f_db:str, object_id:int, name:str, position: int)->int
     sql = ''' INSERT INTO t_attribute(Object_ID, ea_guid, Name, Pos, Stereotype)
               VALUES(?,?,?,?,?) '''
         
-    att =()
+    ea_guid = "{" + str(uuid.uuid1()) +"}"
+    att =(object_id, ea_guid, name, position, "enum")
     
     with conn:
         cur = conn.cursor()
-        ea_guid = "{" + str(uuid.uuid1()) +"}"
-        att =(object_id, ea_guid, name, position, "enum")
         cur.execute(sql, att)
         conn.commit()
-    return object_id
+    return cur.lastrowid
 

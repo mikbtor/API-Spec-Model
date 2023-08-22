@@ -2,6 +2,7 @@ import yaml
 from persistence.entities import Package, Object, Connector
 import persistence.packages as paks
 import persistence.objects as objs
+import persistence.tags as tgs
 import persistence.attributes as atrs
 import persistence.connectors as conns
 
@@ -9,12 +10,21 @@ conectors = list() # list of entities.Connectors
 
 
 def generate_types(f_yaml: str, f_db:str,  type_guid: str):
-    
+    """
+    Generate the resources defined in components/schemas
+    Args:
+        f_yaml (str): source yaml file
+        f_db (str): Sparx EA *.qea file
+        type_guid (str): Sparx EA GUID of the packages where Paths are to be generated
+    """
     global conectors
     c:Connector
-
-    with open(f_yaml, 'r') as f:
-        dict_spec = yaml.safe_load(f)
+    try:
+        with open(f_yaml, 'r') as f:
+            dict_spec = yaml.safe_load(f)
+    except FileNotFoundError as e:
+        e.add_note(f"File {f_yaml} cannot be found")
+        raise e
     
     dict_schemas = dict_spec["components"]["schemas"]
     
@@ -38,6 +48,10 @@ def generate_types(f_yaml: str, f_db:str,  type_guid: str):
                     create_attributes(f_db, o_id, k, dict_atts) 
                 
                 # TODO create tags for required and discrimitator
+                if("discriminator" in ob.keys()):
+                    s_discriminator = ob["discriminator"]
+                    tgs.create_tag(f_db, o_id, "discriminator", s_discriminator, None)
+
                       
             elif "allOf" in ob.keys():           
                 #create object
@@ -61,11 +75,14 @@ def generate_types(f_yaml: str, f_db:str,  type_guid: str):
                             print(ob["title"])
                             print(dict_as)
 
-                # TODO create tags for required and discrimitator 
+                # TODO create tags for required and discrimitator
+                if("discriminator" in ob.keys()):
+                    s_discriminator = ob["discriminator"]
+                    tgs.create_tag(f_db, o_id, "discriminator", s_discriminator, None)
                  
             elif "oneOf" in ob.keys():
                 # TODO implement oneOf for objects
-                print("TODO implement oneOf for objects")
+                print(f"Object {k} uses oneOf and is not imported")
 
         elif ("type" in ob.keys() and 'enum' in ob.keys()):
             # create enumeration

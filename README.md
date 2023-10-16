@@ -1,5 +1,5 @@
 # API-Spec-Model
-Code to create classes in a Sparx EA model from an Open API specification. 
+Code to create objects in a Sparx EA model from an Open API specification. 
 Still work in progress, does not cover all possible use cases. 
 Imports both components/schemas and paths.
 Specifics:

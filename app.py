@@ -1,11 +1,12 @@
 import PySimpleGUI as sg
 import sys
+import traceback
 import model_generator
 import configparser
 import validation
 
 """
-    Generates Open API Specification from an XMI design model
+    Generates paths and types in a Sparx model from an OAS yaml specification
 """
 
 
@@ -65,10 +66,12 @@ def runGUI():
                 sg.popup_error(f"There are validation errors: \n{msg}", title="Validation Error")
             else:
                 try:
+                    print(f"Generate  model from: {f_in} and updating model: {f_out}\n")
                     model_generator.generate_model(f_in, f_out, path_guid, type_guid)
                     sg.popup_auto_close('Model has been generated', title="Completed", auto_close_duration=10)
                 except Exception as e:
                     sg.popup_error(f"An error has been encountered: \n {e}", title="Error")
+                    traceback.print_exception(e)
 
         elif(event == "Exit"):
             config['default'] = {}

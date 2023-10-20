@@ -59,7 +59,7 @@ def get_object_by_id(f_db:str, object_id:int)->Object:
             return None
     
 
-def get_object_by_name(f_db:str, name:str)->Object:
+def get_object_by_name(f_db:str, package_id:int, name:str)->Object:
     """
     Get the object with the given id from the t_object table
     :param f_db: name of database file
@@ -69,7 +69,7 @@ def get_object_by_name(f_db:str, name:str)->Object:
     conn = ut.create_connection(f_db)
     with conn:
         cur = conn.cursor()
-        cur.execute("SELECT Object_ID, Package_ID, ParentID, Object_Type, Stereotype, Name, Note FROM t_object where Name=? ",(name, ))
+        cur.execute("SELECT Object_ID, Package_ID, ParentID, Object_Type, Stereotype, Name, Note FROM t_object where Package_ID=? AND Name=? ",(package_id, name, ))
         row = cur.fetchone()
         if row is not None: 
             o = Object(row[0],row[1],row[2],row[3], row[4],row[5], row[6])

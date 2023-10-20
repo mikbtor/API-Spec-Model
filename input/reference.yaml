@@ -49,21 +49,21 @@ paths:
           type: integer
           format: int32
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Parties'
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -84,17 +84,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Party'
       responses:
-        201:
+        "201":
           description: Create successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -115,17 +115,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Party'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -147,7 +147,7 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json:
@@ -155,15 +155,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Phone'
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -189,17 +189,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Phone'
       responses:
-        201:
+        "201":
           description: Create successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -225,17 +225,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Phone'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -267,17 +267,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Phone'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -303,17 +303,17 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Delete successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -335,22 +335,22 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json: 
               schema:
                 $ref: '#/components/schemas/Email'
 
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -376,17 +376,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Email'
       responses:
-        201:
+        "201":
           description: Create successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -412,17 +412,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Email'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -454,17 +454,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Email'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -490,17 +490,17 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Delete successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -522,21 +522,21 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Party'
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -562,17 +562,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Party'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -593,17 +593,17 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Delete successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -625,7 +625,7 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json:
@@ -633,15 +633,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Address'
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -667,17 +667,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Address'
       responses:
-        201:
+        "201":
           description: Create successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -703,17 +703,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Address'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -745,17 +745,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Address'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -781,17 +781,17 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Delete successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -837,21 +837,21 @@ paths:
           type: integer
           format: int32
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Accounts'
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -872,17 +872,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Account'
       responses:
-        201:
+        "201":
           description: Create successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -903,17 +903,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Account'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -935,21 +935,21 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -970,17 +970,17 @@ paths:
           type: string
         required: true
       responses:
-        200:
+        "200":
           description: Delete successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -1006,17 +1006,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Money'
       responses:
-        200:
+        "200":
           description: Update successful
-        400:
+        "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
+        "401":
           description: Unauthorized
-        500:
+        "500":
           description: Internal Server Error
           content:
             application/problem+json:
@@ -1168,7 +1168,6 @@ components:
           type: string
           format: date
     Organization:
-      type: object
       allOf:
       - $ref: '#/components/schemas/Party'
       - type: object

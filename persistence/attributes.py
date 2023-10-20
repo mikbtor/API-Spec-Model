@@ -21,7 +21,7 @@ def get_attributes_by_obj_id(f_db:str, object_id:int)->list:
             atts.append(att) 
     return atts
 
-def create_attribute(f_db:str, object_id:int, name:str, type:str, position: int, is_collection: int)->int:
+def create_attribute(f_db:str, object_id:int, name:str, type:str, position: int, is_collection: int, is_required:int)->int:
     """
     Create an attribute in the t_attribute table
     :param f_db: Sparx DB file name
@@ -29,19 +29,23 @@ def create_attribute(f_db:str, object_id:int, name:str, type:str, position: int,
     :param name: name of attribute
     :param type: type of attribute
     :param position: position of attribute
-    :isCollection: integer 0 - not a collection, 1 - it is a collection
+    :is_collection: integer 0 - not a collection, 1 - it is a collection
+    :is_required: integer 0 - not required, 1 - required
     :return: int
     """
     conn = ut.create_connection(f_db)
-    sql = ''' INSERT INTO t_attribute(Object_ID, ea_guid, Name, Scope, Type, IsCollection, Pos) VALUES(?,?,?,?,?,?,?) '''
+    sql = ''' INSERT INTO t_attribute(Object_ID, ea_guid, Name, Scope, Type, Stereotype, IsCollection, Pos) VALUES(?,?,?,?,?,?,?,?) '''
         
-    att =()
+    ea_guid = "{" + str(uuid.uuid1()) +"}"
+    scope = "Private"
+    if is_required == 1:
+        stereotype = "required"
+    else:
+        stereotype = None
+    att =(object_id, ea_guid, name, scope, type, stereotype, is_collection, position)
     
     with conn:
         cur = conn.cursor()
-        ea_guid = "{" + str(uuid.uuid1()) +"}"
-        scope = "Private"
-        att =(object_id, ea_guid, name, scope, type, is_collection, position)
         cur.execute(sql, att)
         conn.commit()
     return cur.lastrowid

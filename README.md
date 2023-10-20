@@ -7,9 +7,7 @@ Specifics:
 - $ref imported as associations
 
 What is not implemented:
-- query and path parameters
+- referenced parameters
 - not creating objects from referenced files
-- required not imported
-- parameter qualifiers not imported
 - anyOf not imported as it is not mapping directly to either inheritance or aggregation
   

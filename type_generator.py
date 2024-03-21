@@ -1,15 +1,18 @@
-import yaml
+# pylint: disable=unused-argument, C0303, C0114,C0115,C0116, C0301, E1121, W0612, W0718, R0913, R0914, R1702, W0511, W0603, W1514
+
 import traceback
-from persistence.entities import Package, Object, Connector
+import yaml
+from persistence.entities import Connector
 import persistence.packages as paks
 import persistence.objects as objs
 import persistence.tags as tgs
 import persistence.attributes as atrs
 import persistence.connectors as conns
 
-conectors = list() # list of entities.Connectors
+conectors = [] # list of entities.Connectors
 required = []
-types_package_id = 0
+types_package_id: int = 0
+
 
 basic_type_formats = {"int": {"type": "integer", "format": "int32"},
                       "float": {"type": "number", "format": "float"},
@@ -20,10 +23,10 @@ basic_type_formats = {"int": {"type": "integer", "format": "int32"},
                       "datetime": {"type": "string", "format": "datetime"},
                       "boolean": {"type": "boolean"},
                       "string": {"type": "string"}}
-rev_formats = {"int32":"integer", 
-               "int64":"integer", 
-               "float":"float", 
-               "double":"double", 
+rev_formats = {"int32":"integer",
+               "int64":"integer",
+               "float":"float",
+               "double":"double",
                "date":"date",
                "time":"time",
                "datetime":"datetime"}
@@ -38,30 +41,28 @@ def generate_types(f_yaml: str, f_db:str,  type_guid: str) -> int:
     """
     # global variables
     global required
-    global conectors
     global types_package_id
-
     c:Connector
     o_id = 0
+    is_req = 0
 
     try:
         with open(f_yaml, 'r') as f:
             dict_spec = yaml.safe_load(f)
     except FileNotFoundError as e:
         e.add_note(f"File {f_yaml} cannot be found")
-        raise(e)
+        raise e
     
     try:
         dict_schemas = dict_spec["components"]["schemas"]
     except Exception as e:
         e.add_note("Components and schemas not defined in the file")
-        raise(e)
-    
+        raise e
 
     # get root path package
     root_types_pak = paks.get_package(f_db, type_guid)
     types_package_id = root_types_pak.package_id
-    
+
     # create objects and attributes
     for k, ob in dict_schemas.items():
         try:
@@ -80,11 +81,11 @@ def generate_types(f_yaml: str, f_db:str,  type_guid: str) -> int:
                 att_list = ob["allOf"]
 
                 for att in att_list:
-                    if( "$ref" in att.keys()):
+                    if "$ref" in att.keys():
                         dest_name = att["$ref"].split("/")
                         c = Connector(k, o_id, dest_name[-1] ,"Generalization", None, "1", None, "1")
                         conectors.append(c)
-                    elif("type" in att.keys() and  (att["type"] == "object")):
+                    elif ("type" in att.keys()) and  (att["type"] == "object") and ("properties" in att.keys()):
                         try:
                             dict_as = att["properties"]
                             create_attributes(f_db, o_id, k, dict_as)
@@ -130,17 +131,17 @@ def generate_types(f_yaml: str, f_db:str,  type_guid: str) -> int:
                         is_req=1
                     else:
                         is_req=0   
-                    atrs.create_attribute(f_db, o_id, k.lower(), ob["type"], None, is_req) 
+                    atrs.create_attribute(f_db, o_id, k.lower(), ob["type"], None, 0, is_req) 
 
             # create tags for required and discrimitator
-            if("discriminator" in ob.keys()):
+            if "discriminator" in ob.keys():
                 s_discriminator = ob["discriminator"]["propertyName"]
                 tgs.create_obj_tag(f_db, o_id, "discriminator", s_discriminator, None)
             
-            if("required" in ob.keys()):
+            if "required" in ob.keys():
                 l_required = ob["required"]
                 s_required = str(l_required)
-                if (len(s_required)>100):
+                if len(s_required)>100:
                     s_required = "Check specification"
                 tgs.create_obj_tag(f_db, o_id, "required", str(s_required), None)                     
         except Exception as e:
@@ -168,10 +169,7 @@ def generate_types(f_yaml: str, f_db:str,  type_guid: str) -> int:
 
 
 def create_attributes(f_db:str, o_id:int, source_name:str, dict_atts:dict):
-    
-    global connectors
-    global required
-    
+       
     att_pos = 0
     att_id = 0
     att_type = ""
@@ -216,7 +214,7 @@ def create_attributes(f_db:str, o_id:int, source_name:str, dict_atts:dict):
                     dest_name = a_v["items"]["$ref"].split("/")[-1]
                     c = Connector(source_name, o_id, dest_name,"Association", a_k, "*", a_k, "*")
                     conectors.append(c)
-            elif ("$ref" in a_v.keys()):
+            elif "$ref" in a_v.keys():
                 dest_name = a_v["$ref"].split("/")[-1]
                 c = Connector(source_name, o_id, dest_name,"Association", a_k, "1", a_k, "1")
                 conectors.append(c)
@@ -224,9 +222,4 @@ def create_attributes(f_db:str, o_id:int, source_name:str, dict_atts:dict):
             # do not raise, continue execution
             e.add_note(f'Create attribute exception for:\n - object: {source_name}\n - attribute key: {a_k}\n attribute value: {a_v} \n')
             traceback.print_exception(e)
-
- 
-
-
-
-       
+                   

@@ -1,7 +1,8 @@
+# pylint: disable=unused-argument, C0303, C0114,C0115,C0116, C0301, W0612, W0718, R0913, R0914, R1702, W0511, W0603, W1514
+
 import uuid
-from sqlite3 import Connection, Row, Cursor
-from persistence.entities import Object, Attribute, Connector, Enum
-import persistence.utils as ut 
+from persistence.entities import Attribute
+import persistence.utils as ut
 
 def get_attributes_by_obj_id(f_db:str, object_id:int)->list:
     """
@@ -21,7 +22,7 @@ def get_attributes_by_obj_id(f_db:str, object_id:int)->list:
             atts.append(att) 
     return atts
 
-def create_attribute(f_db:str, object_id:int, name:str, type:str, position: int, is_collection: int, is_required:int)->int:
+def create_attribute(f_db:str, object_id:int, a_name:str, a_type: str, a_position: int, is_collection: int, is_required:int)->int:
     """
     Create an attribute in the t_attribute table
     :param f_db: Sparx DB file name
@@ -42,7 +43,7 @@ def create_attribute(f_db:str, object_id:int, name:str, type:str, position: int,
         stereotype = "required"
     else:
         stereotype = None
-    att =(object_id, ea_guid, name, scope, type, stereotype, is_collection, position)
+    att =(object_id, ea_guid, a_name, scope, a_type, stereotype, is_collection, a_position)
     
     with conn:
         cur = conn.cursor()
@@ -69,4 +70,3 @@ def create_enum_attribute(f_db:str, object_id:int, name:str, position: int)->int
         cur.execute(sql, att)
         conn.commit()
     return cur.lastrowid
-

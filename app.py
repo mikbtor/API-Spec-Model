@@ -1,16 +1,17 @@
-import PySimpleGUI as sg
+# pylint: disable=unused-argument, C0303, C0114,C0115,C0116, C0301, W0612, W0718, R0913, R0914, R1702, W1514, W0603
+
 import sys
 import traceback
-import model_generator
 import configparser
+import PySimpleGUI as sg
+import model_generator
 import validation
 
-"""
-    Generates paths and types in a Sparx model from an OAS yaml specification
-"""
 
-
-def runGUI():
+def run_gui():
+    """
+        Generates paths and types in a Sparx model from an OAS yaml specification
+    """
     path_guid = ''
     type_guid = ''
     f_in = ''
@@ -46,7 +47,7 @@ def runGUI():
 
     while True:     # Event Loop
         event, values = window.read()
-        if(event == "Generate"):
+        if event == "Generate":
             config['default'] = {}
             config['default']["path_guid"] = values["i-1"]
             config['default']['type_guid'] = values["i-2"]
@@ -55,14 +56,13 @@ def runGUI():
             # update config file
             with open('config.ini', 'w') as configfile:
                 config.write(configfile)
-            
             path_guid = values["i-1"]
             type_guid = values["i-2"]
             f_in = values["i-3"]
             f_out = values["i-4"]
             # verify input data
             msg = validation.is_valid_input(f_in, f_out, path_guid, type_guid)
-            if (msg != ""):
+            if msg != "":
                 sg.popup_error(f"There are validation errors: \n{msg}", title="Validation Error")
             else:
                 try:
@@ -73,7 +73,7 @@ def runGUI():
                     sg.popup_error(f"An error has been encountered: \n {e}", title="Error")
                     traceback.print_exception(e)
 
-        elif(event == "Exit"):
+        elif event == "Exit":
             config['default'] = {}
             config['default']["path_guid"] = values["i-1"]
             config['default']['type_guid'] = values["i-2"]
@@ -88,4 +88,4 @@ def runGUI():
     window.close()
 
 if __name__ == '__main__':
-    runGUI()
+    run_gui()

@@ -1,6 +1,8 @@
+# pylint: disable=unused-argument, C0303, C0114,C0115,C0116, C0301, E1121, W0612, W0718, R0913, R0914, R1702, W0511, W0603, W1514
+
 import traceback
-import PySimpleGUI as sg
 import yaml
+import PySimpleGUI as sg
 import persistence.packages as paks
 import persistence.objects as objs
 import persistence.operations as opers
@@ -9,11 +11,12 @@ from type_generator import types_package_id as tp_id
 from persistence.entities import Operation, OperationParameter, Object
 
 
-conectors = list()  # list of entities.Connectors
+conectors = []  # list of entities.Connectors
 dict_req_bodies = {}
 dict_parameters = {}
+types_pckg_id: int = 0
 
-def generate_paths(f_yaml: str, f_db: str, path_guid: str):
+def generate_paths(f_yaml: str, f_db: str, path_guid: str, types_package_id: int):
     """
     Generate  paths from the yaml file into the sparx model for the path guid
     Args:
@@ -23,13 +26,16 @@ def generate_paths(f_yaml: str, f_db: str, path_guid: str):
     """
     global dict_req_bodies
     global dict_parameters
+    global types_pckg_id
+
+    types_pckg_id = types_package_id
 
     try:
         with open(f_yaml, "r") as f:
             dict_spec = yaml.safe_load(f)
     except Exception as e:
         e.add_note(f"Cannot access or convert the yaml file {f_yaml}")
-        raise(e)
+        raise e
     
     if "paths" not in dict_spec.keys():
         sg.popup_error("paths do not exist in the specification")
@@ -130,7 +136,7 @@ def create_get(f_db: str, path_id: int, path_k: str, path_v: dict):
     ret_type_id = 0
     is_collection = "0"
 
-    global tp_id
+    # global tp_id
 
     # create GET operation
     try:
@@ -149,21 +155,32 @@ def create_get(f_db: str, path_id: int, path_k: str, path_v: dict):
                     # find operation type
                     ret_type = ret_ref["$ref"].split("/")
                     is_collection = "0"
+                    ret_obj = objs.get_object_by_name(f_db, tp_id, ret_type[-1])
+                    if ret_obj is not None:
+                        ret_type_id = ret_obj.object_id
+                    else:
+                        ret_type_id = 0
+                    # create operation that returns an object
+                    op = Operation(0,path_id,"GET",op_v["operationId"],ret_type[-1],is_collection,ret_type_id)
+                    op_id = opers.create_operation(f_db, op)
                 elif "type" in ret_ref.keys():
                     if ret_ref["type"] == "array":
                         # array of objects
                         if "$ref" in ret_ref["items"].keys():
                             ret_type = ret_ref["items"]["$ref"].split("/")
                         is_collection = "1"
-                ret_obj = objs.get_object_by_name(f_db, tp_id, ret_type[-1])
-                if ret_obj is not None:
-                    ret_type_id = ret_obj.object_id
-                else:
-                    ret_type_id = 0
-
-                # create operation
-                op = Operation(0,path_id,"GET",op_v["operationId"],ret_type[-1],is_collection,ret_type_id)
-                op_id = opers.create_operation(f_db, op)
+                        ret_obj = objs.get_object_by_name(f_db, tp_id, ret_type[-1])
+                        if ret_obj is not None:
+                            ret_type_id = ret_obj.object_id
+                        else:
+                            ret_type_id = 0
+                        # create operation that returns an object
+                        op = Operation(0,path_id,"GET",op_v["operationId"],ret_type[-1],is_collection,ret_type_id)
+                        op_id = opers.create_operation(f_db, op)
+                    else:
+                        ret_type =ret_ref["type"]
+                        op = Operation(0, path_id, "GET", op_v["operationId"], ret_type, 0, 0)
+                        op_id = opers.create_operation(f_db, op)
             else:
                 op = Operation(0, path_id, "GET", op_v["operationId"], "binary", 0, 0)
                 op_id = opers.create_operation(f_db, op)
@@ -188,7 +205,8 @@ def create_ppp_op(f_db: str, op_stype: str, path_id: int, path_k: str, path_v: d
         _type_: n/a
     """
 
-    global dict_req_bodies
+    # global dict_req_bodies
+    # global types_pckg_id
 
     op: Operation
     req_types = []
@@ -215,7 +233,7 @@ def create_ppp_op(f_db: str, op_stype: str, path_id: int, path_k: str, path_v: d
                     req_body_type = op_v["requestBody"]["content"]["application/json"]["schema"]["$ref"]
                     req_types = req_body_type.split("/")
                     req_type=req_types[-1]
-                    req_obj = objs.get_object_by_name(f_db, tp_id, req_type)
+                    req_obj = objs.get_object_by_name(f_db, types_pckg_id, req_type)
                     if req_obj is None:
                         req_type_id = 0
                     else:
@@ -226,15 +244,15 @@ def create_ppp_op(f_db: str, op_stype: str, path_id: int, path_k: str, path_v: d
             elif "$ref" in op_v["requestBody"].keys():
                 req_types = op_v["requestBody"]["$ref"].split("/")
                 req_type = req_types[-1]
-                req_obj = objs.get_object_by_name(f_db, req_type)
+                req_obj = objs.get_object_by_name(f_db, types_pckg_id, req_type)
                 if req_obj is None:
                     req_type_id = 0
                 else:
                     req_type_id = req_obj.object_id
             
             # create operation parameter for the request body        
-            opPrm = OperationParameter(op_id, "request_body", req_type, "in", 0, req_type_id)
-            opers.create_operation_parameter(f_db, opPrm)
+            op_prm = OperationParameter(op_id, "request_body", req_type, "in", 0, req_type_id)
+            opers.create_operation_parameter(f_db, op_prm)
 
         # operation query and path parameters
         create_op_params(f_db, op_id, op_k, op_v)
@@ -260,7 +278,6 @@ def create_delete(f_db: str, path_id: int, path_k: str, path_v: dict):
     
 def create_op_params(f_db: str, op_id:int, op_k: str, op_v: dict):
     
-    global dict
     try:
         if "parameters" in op_v.keys():
             params = op_v["parameters"]
@@ -282,14 +299,14 @@ def create_op_params(f_db: str, op_id:int, op_k: str, op_v: dict):
                         p_type_id = 0
                     elif "$ref" in param["schema"].keys():
                         p_type = param["schema"]["$ref"].split("/")[-1]
-                        req_obj = objs.get_object_by_name(f_db, p_type)
+                        req_obj = objs.get_object_by_name(f_db, types_pckg_id, p_type)
                         if req_obj is None:
                             p_type_id = 0
                         else:
                             p_type_id = req_obj.object_id
                 if "in" in param.keys() and "path" == param["in"] or "query"== param["in"]:
-                    opPrm = OperationParameter(op_id, p_name, p_type, "in", 0, p_type_id)
-                    opers.create_operation_parameter(f_db, opPrm)
+                    op_prm = OperationParameter(op_id, p_name, p_type, "in", 0, p_type_id)
+                    opers.create_operation_parameter(f_db, op_prm)
             elif isinstance(param, list):
                 for p in param:
                     # Get the definition of the parameter from the globa parametes dictionary
@@ -305,14 +322,14 @@ def create_op_params(f_db: str, op_id:int, op_k: str, op_v: dict):
                             p_type_id = 0
                         elif "$ref" in p_v["schema"].keys():
                             p_type = p_v["schema"]["$ref"].split("/")[-1]
-                            req_obj = objs.get_object_by_name(f_db, p_type)
+                            req_obj = objs.get_object_by_name(f_db, types_pckg_id, p_type)
                             if req_obj is None:
                                 p_type_id = 0
                             else:
                                 p_type_id = req_obj.object_id
                     if "in" in param.keys() and "path" == param["in"] or "query"== param["in"]:
-                        opPrm = OperationParameter(op_id, p_name, p_type, "in", 0, p_type_id)
-                        opers.create_operation_parameter(f_db, opPrm)
+                        op_prm = OperationParameter(op_id, p_name, p_type, "in", 0, p_type_id)
+                        opers.create_operation_parameter(f_db, op_prm)
     except Exception as e:
         e.add_note(f"Error creating operation parameter for operation{op_k}")
         traceback.print_exception(e)

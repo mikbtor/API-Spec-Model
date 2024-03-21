@@ -1,6 +1,7 @@
+# pylint: disable=unused-argument, C0303, C0114,C0115,C0116, C0301, W0612, W0718, R0913, R0914, R1702, W0511, W0603, W1514
+
 import uuid
-from sqlite3 import Connection, Row, Cursor
-from persistence.entities import Object, Attribute, Connector, Enum
+from persistence.entities import Object, Enum
 import persistence.utils as ut  
 
 
@@ -61,7 +62,7 @@ def get_object_by_id(f_db:str, object_id:int)->Object:
 
 def get_object_by_name(f_db:str, package_id:int, name:str)->Object:
     """
-    Get the object with the given id from the t_object table
+    Get the object with the given id from the t_object table, hard to know which the package it is
     :param f_db: name of database file
     :param object_id: object id value
     :return: object
@@ -76,8 +77,8 @@ def get_object_by_name(f_db:str, package_id:int, name:str)->Object:
             return o
         else:
             return None
-
-def create_object(f_db:str, package_id:int, type:str, stereotype:str, name:str)->int:
+        
+def create_object(f_db:str, package_id:int, o_type:str, o_stereotype:str, o_name:str)->int:
     """
     Create an object in the t_object table
     :param o: Object to create
@@ -95,7 +96,7 @@ def create_object(f_db:str, package_id:int, type:str, stereotype:str, name:str)-
     with conn:
         cur = conn.cursor()
         ea_guid = "{" + str(uuid.uuid1()) +"}"
-        obj =(package_id, ea_guid, type, stereotype, name, "DrM", "Proposed", 0, "Public",1,0,0)
+        obj =(package_id, ea_guid, o_type, o_stereotype, o_name, "DrM", "Proposed", 0, "Public",1,0,0)
         cur.execute(sql, obj)
         conn.commit()
     return cur.lastrowid
